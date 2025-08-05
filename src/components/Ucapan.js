@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = "https://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJubm5xZWVjanlwdGJoaXhidmxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDY4MjMsImV4cCI6MjA2OTk4MjgyM30.liuS-PsU7oTJIgrx0DIrvMuEc3B-TZ4BfBMbQL6ot-I.supabase.co";
+const supabaseAnonKey = "your-anon-key";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Ucapan = () => {
   const [nama, setNama] = useState("");
@@ -7,49 +12,35 @@ const Ucapan = () => {
   const [ucapanList, setUcapanList] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxulQJ0mANmxYF8cOXLMoqPZz6X-4FfYluFfxyzD8uiz0vAKEzgYIWHJdLucoI_oxA7/exec"; // Ganti dengan Web App URL kamu
+  const fetchUcapan = async () => {
+    const { data, error } = await supabase
+      .from("ucapan")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error) setUcapanList(data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!nama || !pesan || !kehadiran) return;
 
-    const payload = {
-      nama,
-      ucapan: pesan,
-      kehadiran,
-    };
+    const { error } = await supabase.from("ucapan").insert([
+      {
+        nama,
+        ucapan: pesan,
+        kehadiran,
+      },
+    ]);
 
-    try {
-      const res = await fetch(scriptURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-
-      if (result.result === "success") {
-        setIsSuccess(true);
-        setNama("");
-        setPesan("");
-        setKehadiran("");
-        fetchUcapan(); // Refresh ucapan setelah submit
-      }
-    } catch (err) {
-      console.error("Gagal mengirim:", err);
-    }
-  };
-
-  const fetchUcapan = async () => {
-    try {
-      const res = await fetch(scriptURL);
-      const data = await res.json();
-      const reversed = data.reverse(); // Tampilkan yang terbaru di atas
-      setUcapanList(reversed);
-    } catch (err) {
-      console.error("Gagal mengambil ucapan:", err);
+    if (!error) {
+      setIsSuccess(true);
+      setNama("");
+      setPesan("");
+      setKehadiran("");
+      fetchUcapan();
+    } else {
+      console.error("Gagal kirim:", error.message);
     }
   };
 
@@ -58,163 +49,40 @@ const Ucapan = () => {
   }, []);
 
   return (
-    <section id="ucapan" style={styles.section}>
-      <h2 style={styles.title}>Kirim Ucapan & Doa</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
+    <section>
+      <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Nama kamu"
           value={nama}
           onChange={(e) => setNama(e.target.value)}
-          style={styles.input}
+          placeholder="Nama"
         />
         <textarea
-          placeholder="Tulis ucapan dan doa terbaik..."
           value={pesan}
           onChange={(e) => setPesan(e.target.value)}
-          rows={4}
-          style={styles.textarea}
+          placeholder="Ucapan"
         />
         <select
           value={kehadiran}
           onChange={(e) => setKehadiran(e.target.value)}
-          style={styles.select}
         >
-          <option value="" disabled>
-            Konfirmasi Kehadiran
-          </option>
+          <option value="">Konfirmasi Kehadiran</option>
           <option value="Hadir">Hadir</option>
-          <option value="Tidak Hadir">Maaf Belum Dapat Hadir</option>
+          <option value="Tidak Hadir">Maaf Belum Bisa Hadir</option>
         </select>
-
-        <button type="submit" style={styles.button}>
-          Kirim Ucapan
-        </button>
-        {isSuccess && (
-          <p style={{ color: "#800000", marginTop: "10px" }}>
-            Terima kasih atas ucapannya! 💌
-          </p>
-        )}
+        <button type="submit">Kirim</button>
+        {isSuccess && <p>Terima kasih atas ucapannya!</p>}
       </form>
 
-      <div style={styles.listWrapper}>
-        <h3 style={styles.subtitle}>💬 Ucapan Masuk</h3>
-        {ucapanList.length === 0 ? (
-          <p style={{ textAlign: "center", color: "#888" }}>
-            Belum ada ucapan yang masuk 🕊️
-          </p>
-        ) : (
-          ucapanList.map((u, i) => (
-            <div key={i} style={styles.ucapanBox}>
-              <strong style={styles.nama}>{u.nama}</strong>{" "}
-              <span style={styles.kehadiran}>({u.kehadiran})</span>
-              <p style={styles.pesan}>"{u.ucapan}"</p>
-            </div>
-          ))
-        )}
-      </div>
+      <h3>Ucapan Masuk</h3>
+      <ul>
+        {ucapanList.map((u) => (
+          <li key={u.id}>
+            <strong>{u.nama}</strong> ({u.kehadiran}): {u.ucapan}
+          </li>
+        ))}
+      </ul>
     </section>
   );
-};
-
-const styles = {
-  section: {
-    background: "#fdf6f6",
-    padding: "50px 16px",
-    textAlign: "center",
-    fontFamily: "'Cormorant Garamond', serif",
-  },
-  title: {
-    fontSize: "30px",
-    marginBottom: "30px",
-    color: "#800000",
-    fontFamily: "'Great Vibes', cursive",
-  },
-  subtitle: {
-    fontSize: "22px",
-    marginBottom: "20px",
-    color: "#800000",
-    fontWeight: "600",
-  },
-  form: {
-    maxWidth: "450px",
-    margin: "0 auto",
-    background: "#fff",
-    padding: "24px",
-    borderRadius: "16px",
-    boxShadow: "0 8px 24px rgba(128, 0, 0, 0.1)",
-    display: "flex",
-    flexDirection: "column",
-    gap: "14px",
-  },
-  input: {
-    padding: "14px",
-    borderRadius: "12px",
-    border: "1px solid #ccc",
-    fontSize: "15px",
-    outlineColor: "#800000",
-    fontFamily: "'Cormorant Garamond', serif",
-  },
-  textarea: {
-    padding: "14px",
-    borderRadius: "12px",
-    border: "1px solid #ccc",
-    resize: "none",
-    fontSize: "15px",
-    outlineColor: "#800000",
-    fontFamily: "'Cormorant Garamond', serif",
-  },
-  select: {
-    padding: "14px",
-    borderRadius: "12px",
-    border: "1px solid #ccc",
-    fontSize: "15px",
-    outlineColor: "#800000",
-    fontFamily: "'Cormorant Garamond', serif",
-  },
-  button: {
-    padding: "14px",
-    backgroundColor: "#800000",
-    border: "none",
-    borderRadius: "12px",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "16px",
-    cursor: "pointer",
-    transition: "background 0.3s",
-    fontFamily: "'Cormorant Garamond', serif",
-  },
-  listWrapper: {
-    marginTop: "50px",
-    maxWidth: "600px",
-    marginInline: "auto",
-  },
-  ucapanBox: {
-    background: "#fff",
-    borderLeft: "6px solid #800000",
-    padding: "16px 20px",
-    borderRadius: "14px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-    marginBottom: "16px",
-    textAlign: "left",
-  },
-  nama: {
-    color: "#800000",
-    fontWeight: "bold",
-    fontSize: "16px",
-  },
-  kehadiran: {
-    color: "#555",
-    marginLeft: "6px",
-    fontStyle: "italic",
-    fontSize: "14px",
-  },
-  pesan: {
-    marginTop: "6px",
-    fontSize: "15px",
-    color: "#444",
-    lineHeight: "1.5",
-  },
 };
 
 export default Ucapan;

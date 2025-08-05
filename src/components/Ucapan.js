@@ -7,7 +7,7 @@ const Ucapan = () => {
   const [ucapanList, setUcapanList] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxJNxHjZaBLDpw6LwHBkx1J2ZcTQc7ALxSODqeg-7VRjqVIYPVg7Ckglb6zo651XotsQg/exec"; // Ganti dengan Web App URL kamu
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxB5xlTidNlGlW7yza-hf-J7pD0Yw8v34krAWwo2MGsN3Zpr1wD9VMGq4MKksyg4zqcvg/exec"; // Ganti dengan Web App URL kamu
 
   const handleSubmit = async (e) => {
     e.preventDefault();

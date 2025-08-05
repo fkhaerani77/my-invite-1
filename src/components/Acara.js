@@ -14,7 +14,7 @@ const Acara = () => {
       judul: "Akad Pernikahan",
       hari: "Minggu",
       tanggal: ["07", "12", "25"],
-      waktu: "Pukul 08.00 WIB",
+      waktu: "Pukul 09.00 WIB",
       tempat: "Kediaman Mempelai Wanita",
       alamat: "Desa Tuk Karang suwung Blok Pulau Undrus Dusun 01 RT/RW 01",
       // map: "https://maps.app.goo.gl/DfmuqqMvmTGovWeRA",

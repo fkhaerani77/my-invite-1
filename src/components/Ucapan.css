@@ -1,92 +1,87 @@
-section {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fdf4f5;
-  padding: 2rem;
+.ucapan-wrapper {
+  background-color: #fef6f6;
+  padding: 40px 20px;
+  font-family: 'Georgia', serif;
   text-align: center;
-  min-height: 100vh;
 }
 
-form {
+.ucapan-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 30px;
+  margin-bottom: 25px;
+  color: #7d0c0c;
+}
+
+.ucapan-form {
+  max-width: 500px;
+  margin: 0 auto;
   background-color: #fff;
-  padding: 2rem 1.5rem;
+  padding: 30px 25px;
   border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  max-width: 400px;
-  margin: 0 auto 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.07);
 }
 
-form input,
-form textarea,
-form select {
+.ucapan-input,
+.ucapan-textarea,
+.ucapan-select {
   width: 100%;
-  padding: 0.8rem 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  font-size: 1rem;
+  font-family: inherit;
   box-sizing: border-box;
-  font-family: "'Great Vibes', cursive";
-  resize: none;
 }
 
-form button {
-  background-color: #870000;
-  color: white;
-  padding: 0.8rem 1rem;
+.ucapan-button {
   width: 100%;
-  font-size: 1rem;
+  padding: 12px;
   font-weight: bold;
+  font-family: 'Georgia', serif;
+  background-color: #8b0000;
+  color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  
+  transition: background-color 0.3s ease;
 }
 
-form button:hover {
-  background-color: #a70000;
+.ucapan-button:hover {
+  background-color: #a00000;
 }
 
-h3 {
-  font-size: 1.25rem;
-  color: #870000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+.ucapan-success {
+  color: green;
+  margin-top: 10px;
 }
 
-h3::before {
-  content: '💬';
+.ucapan-subtitle {
+  margin-top: 40px;
+  color: #7d0c0c;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-ul {
+.ucapan-empty {
+  color: #555;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.ucapan-list {
   list-style: none;
   padding: 0;
-  margin-top: 1rem;
-  color: #555;
+  margin-top: 15px;
+  max-width: 500px;
+  margin-inline: auto;
 }
 
-ul li {
-  background: #fff;
-  margin-bottom: 0.75rem;
-  padding: 1rem;
-  border-radius: 10px;
+.ucapan-item {
   text-align: left;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-left: 3px solid #8b0000;
+  border-radius: 5px;
 }
-
-p {
-  margin-top: 1rem;
-  color: green;
-  font-weight: bold;
-}
-
-.judul-ucapan {
-  font-family: 'Great Vibes', cursive;
-  padding-top: 50px;
-  color: #870000;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-

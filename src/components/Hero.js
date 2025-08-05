@@ -85,7 +85,7 @@ const Hero = () => {
           ))}
         </div>
         <p className="kalimat-pembukaan">
-          Atas Berkah dan Rahmat Allah Subhanallahu Wa Ta'ala. Tanpa mengurangi rasa hormat. Kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami :
+          Atas Berkah dan Rahmat Allah Subhanahu Wa Ta'ala. Tanpa mengurangi rasa hormat. Kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami :
         </p>
       </div>
     </section>

@@ -2,7 +2,7 @@ import React from "react";
 import danaLogo from "../assets/logo-dana.png";
 
 const Hadiah = () => {
-  const nomorDana1 = "0812 3456 7890";
+  const nomorDana1 = "0831 2855 9288";
   const nomorDana2 = "0897 9811 153";
 
   const handleCopy = (nomor) => {

@@ -131,7 +131,7 @@ const Perkenalan = () => {
     <h3 style={styles.name}>Amelia Nurrani</h3>
     <p style={styles.desc}>
       Putri dari Pasangan <br />
-      Bapak Aman Apeng & Ibu Nengsih Sunengsihni <br />
+      Bapak Aman Apeng & Ibu Nengsih Sunengsih <br />
       {/* Beralamat di Jakarta */}
     </p>
   </motion.div>

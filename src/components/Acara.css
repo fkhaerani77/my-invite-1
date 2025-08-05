@@ -1,0 +1,31 @@
+/* Animasi fade-in */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tombol lokasi tetap bisa diberi style tambahan */
+.lokasi-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background-color: #5c2a18;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.lokasi-btn:hover {
+  background-color: #3f1c10;
+}
+
+.acara-item {
+  margin-bottom: 16px;
+}

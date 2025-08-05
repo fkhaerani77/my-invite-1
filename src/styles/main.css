@@ -1,0 +1,43 @@
+/* styles/main.css */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Playfair Display', serif;
+  background-color: #FAF8F5;
+  color: #5C4033;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #5C4033;
+  text-decoration: none;
+}
+
+section {
+  padding: 2rem;
+  border-bottom: 1px solid #D2B48C;
+  background-color: #FFF8F0;
+}
+
+h1, h2, h3 {
+  color: #5C4033;
+}
+
+button {
+  background-color: #A9746E;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #5C4033;
+}
+
+

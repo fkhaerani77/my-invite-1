@@ -1,0 +1,124 @@
+.hero-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* ⬅️ Memposisikan konten ke tengah */
+  text-align: center;
+}
+
+.hero-backgrounds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-bg.visible {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* ✅ Tambahan efek blur putih di bagian bawah background */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40%; /* Bisa diubah sesuai kebutuhan */
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(0.5px);
+  color: #6b1e1e;
+  max-width: 90%;
+  width: 420px; /* ⬅️ Ukuran konsisten dan tidak kepanjangan */
+}
+
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: #6b1e1e;
+  padding-bottom: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+  font-family: "Great Vibes", cursive;
+  font-size: 2rem;
+  color: #6b1e1e;
+  margin-bottom: 2rem;
+}
+
+.countdown-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.countdown-box {
+  flex: 1;
+  background-color: #6b1e1e;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+}
+
+.count-number {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.count-label {
+  font-size: 0.6rem;
+}
+
+.arabic-opening {
+  font-family: 'Lateef', serif;
+  font-size: 1rem;
+  text-align: center;
+  color: #6b1e1e;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.kalimat-pembukaan {
+  font-family: 'Georgia' serif; /* atau bisa ganti dengan 'Playfair Display' */
+  font-size: 1rem;
+  color: #5a3b3b;
+  text-align: center;
+  padding-top: 20px;
+  line-height: 1.7;
+  padding: 2px;
+}
+
+.surat {
+  font-weight: 600;
+}
+
+

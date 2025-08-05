@@ -35,14 +35,14 @@ function App() {
   useEffect(() => {
     if (!isOpened || !isAutoScroll) return;
 
-    let scrollSpeed = 1;
+    let scrollSpeed = 3;
     let interval;
 
     const scrollDown = () => {
       window.scrollBy({ top: scrollSpeed, behavior: "smooth" });
     };
 
-    interval = setInterval(scrollDown, 5);
+    interval = setInterval(scrollDown, 3);
 
     const onUserScroll = (e) => {
       if (e.deltaY < 0) {

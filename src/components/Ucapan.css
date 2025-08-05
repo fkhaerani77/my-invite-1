@@ -1,0 +1,92 @@
+section {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fdf4f5;
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+}
+
+form {
+  background-color: #fff;
+  padding: 2rem 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  margin: 0 auto 2rem;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: "'Great Vibes', cursive";
+  resize: none;
+}
+
+form button {
+  background-color: #870000;
+  color: white;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  
+}
+
+form button:hover {
+  background-color: #a70000;
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: #870000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+h3::before {
+  content: '💬';
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  color: #555;
+}
+
+ul li {
+  background: #fff;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+p {
+  margin-top: 1rem;
+  color: green;
+  font-weight: bold;
+}
+
+.judul-ucapan {
+  font-family: 'Great Vibes', cursive;
+  padding-top: 50px;
+  color: #870000;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+

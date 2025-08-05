@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import './Ucapan.css';
 
-const supabaseUrl = "https://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJubm5xZWVjanlwdGJoaXhidmxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDY4MjMsImV4cCI6MjA2OTk4MjgyM30.liuS-PsU7oTJIgrx0DIrvMuEc3B-TZ4BfBMbQL6ot-I.supabase.co";
-const supabaseAnonKey = "your-anon-key";
+
+const supabaseUrl = "https://bnnnqeecjyptbhixbvlp.supabase.co";
+const supabaseAnonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJubm5xZWVjanlwdGJoaXhidmxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDY4MjMsImV4cCI6MjA2OTk4MjgyM30.liuS-PsU7oTJIgrx0DIrvMuEc3B-TZ4BfBMbQL6ot-I";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Ucapan = () => {
@@ -50,16 +53,18 @@ const Ucapan = () => {
 
   return (
     <section>
+
+      <h2 className="judul-ucapan">Kirim Ucapan & Doa</h2>
       <form onSubmit={handleSubmit}>
         <input
           value={nama}
           onChange={(e) => setNama(e.target.value)}
-          placeholder="Nama"
+          placeholder="Nama kamu"
         />
         <textarea
           value={pesan}
           onChange={(e) => setPesan(e.target.value)}
-          placeholder="Ucapan"
+          placeholder="Tulis ucapan dan doa terbaik..."
         />
         <select
           value={kehadiran}
@@ -69,12 +74,15 @@ const Ucapan = () => {
           <option value="Hadir">Hadir</option>
           <option value="Tidak Hadir">Maaf Belum Bisa Hadir</option>
         </select>
-        <button type="submit">Kirim</button>
+        <button type="submit">Kirim Ucapan</button>
         {isSuccess && <p>Terima kasih atas ucapannya!</p>}
       </form>
 
       <h3>Ucapan Masuk</h3>
       <ul>
+        {ucapanList.length === 0 && (
+          <p>Belum ada ucapan yang masuk 🕊️</p>
+        )}
         {ucapanList.map((u) => (
           <li key={u.id}>
             <strong>{u.nama}</strong> ({u.kehadiran}): {u.ucapan}

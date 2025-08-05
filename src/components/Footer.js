@@ -16,7 +16,7 @@ const Footer = () => (
     <p style={{ fontSize: "16px", marginBottom: "4px" }}>
       Terima kasih atas perhatian dan kehadiran Anda.
     </p>
-    <p style={{ fontStyle: "italic", marginBottom: "6px" }}>Hormat kami,</p>
+    {/* <p style={{ fontStyle: "italic", marginBottom: "6px" }}>Hormat kami,</p>
     <strong
       style={{
         fontSize: "18px",
@@ -25,7 +25,7 @@ const Footer = () => (
       }}
     >
       Keluarga Besar Kedua Mempelai
-    </strong>
+    </strong> */}
 
     <div
       style={{

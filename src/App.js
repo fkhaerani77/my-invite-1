@@ -42,7 +42,7 @@ function App() {
       window.scrollBy({ top: scrollSpeed, behavior: "smooth" });
     };
 
-    interval = setInterval(scrollDown, 20);
+    interval = setInterval(scrollDown, 5);
 
     const onUserScroll = (e) => {
       if (e.deltaY < 0) {

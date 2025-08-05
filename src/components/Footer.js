@@ -39,7 +39,7 @@ const Footer = () => (
     >
       Powered by{" "}
       <a
-        href="https://www.instagram.com/nama_ig_kamu"
+        href="https://www.instagram.com/fkhaerani_"
         target="_blank"
         rel="noopener noreferrer"
         style={{

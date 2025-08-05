@@ -24,7 +24,7 @@ const Footer = () => (
         color: "#841c26",
       }}
     >
-      Keluarga Besar
+      Keluarga Besar Kedua Mempelai
     </strong>
 
     <div

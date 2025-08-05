@@ -1,21 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Ucapan = () => {
   const [nama, setNama] = useState("");
   const [pesan, setPesan] = useState("");
   const [kehadiran, setKehadiran] = useState("");
   const [ucapanList, setUcapanList] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxJNxHjZaBLDpw6LwHBkx1J2ZcTQc7ALxSODqeg-7VRjqVIYPVg7Ckglb6zo651XotsQg/exec"; // Ganti dengan Web App URL kamu
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!nama || !pesan || !kehadiran) return;
 
-    const newUcapan = { nama, pesan, kehadiran };
-    setUcapanList([newUcapan, ...ucapanList]);
-    setNama("");
-    setPesan("");
-    setKehadiran("");
+    const payload = {
+      nama,
+      ucapan: pesan,
+      kehadiran,
+    };
+
+    try {
+      const res = await fetch(scriptURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (result.result === "success") {
+        setIsSuccess(true);
+        setNama("");
+        setPesan("");
+        setKehadiran("");
+        fetchUcapan(); // Refresh ucapan setelah submit
+      }
+    } catch (err) {
+      console.error("Gagal mengirim:", err);
+    }
   };
+
+  const fetchUcapan = async () => {
+    try {
+      const res = await fetch(scriptURL);
+      const data = await res.json();
+      const reversed = data.reverse(); // Tampilkan yang terbaru di atas
+      setUcapanList(reversed);
+    } catch (err) {
+      console.error("Gagal mengambil ucapan:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUcapan();
+  }, []);
 
   return (
     <section id="ucapan" style={styles.section}>
@@ -50,22 +90,28 @@ const Ucapan = () => {
         <button type="submit" style={styles.button}>
           Kirim Ucapan
         </button>
+        {isSuccess && (
+          <p style={{ color: "#800000", marginTop: "10px" }}>
+            Terima kasih atas ucapannya! 💌
+          </p>
+        )}
       </form>
 
       <div style={styles.listWrapper}>
         <h3 style={styles.subtitle}>💬 Ucapan Masuk</h3>
-        {ucapanList.length === 0 && (
+        {ucapanList.length === 0 ? (
           <p style={{ textAlign: "center", color: "#888" }}>
             Belum ada ucapan yang masuk 🕊️
           </p>
+        ) : (
+          ucapanList.map((u, i) => (
+            <div key={i} style={styles.ucapanBox}>
+              <strong style={styles.nama}>{u.nama}</strong>{" "}
+              <span style={styles.kehadiran}>({u.kehadiran})</span>
+              <p style={styles.pesan}>"{u.ucapan}"</p>
+            </div>
+          ))
         )}
-        {ucapanList.map((u, i) => (
-          <div key={i} style={styles.ucapanBox}>
-            <strong style={styles.nama}>{u.nama}</strong>{" "}
-            <span style={styles.kehadiran}>({u.kehadiran})</span>
-            <p style={styles.pesan}>"{u.pesan}"</p>
-          </div>
-        ))}
       </div>
     </section>
   );

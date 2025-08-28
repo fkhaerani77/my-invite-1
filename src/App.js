@@ -35,37 +35,41 @@ function App() {
   useEffect(() => {
   if (!isOpened || !isAutoScroll) return;
 
-  let scrollSpeed = 1.5; // px per frame (~30px/detik pada 60fps)
-  let animationFrameId;
+  let scrollSpeed = 1.8; // pas, halus
+  let rafId;
+  let startDelay;
 
   const smoothScroll = () => {
     window.scrollBy(0, scrollSpeed);
-    animationFrameId = requestAnimationFrame(smoothScroll);
+    rafId = requestAnimationFrame(smoothScroll);
   };
 
-  animationFrameId = requestAnimationFrame(smoothScroll);
+  // ✅ kasih delay 500ms biar gak nyangkut di atas
+  startDelay = setTimeout(() => {
+    rafId = requestAnimationFrame(smoothScroll);
+  }, 500);
 
   const onUserScroll = (e) => {
     if (e.deltaY < 0) {
       setIsAutoScroll(false);
-      cancelAnimationFrame(animationFrameId);
     }
   };
 
   const onUserClickLink = () => {
     setIsAutoScroll(false);
-    cancelAnimationFrame(animationFrameId);
     setTimeout(() => {
       setIsAutoScroll(true);
     }, 3000);
   };
 
   window.addEventListener("wheel", onUserScroll);
+
   const navLinks = document.querySelectorAll("nav a");
   navLinks.forEach((a) => a.addEventListener("click", onUserClickLink));
 
   return () => {
-    cancelAnimationFrame(animationFrameId);
+    clearTimeout(startDelay);
+    cancelAnimationFrame(rafId);
     window.removeEventListener("wheel", onUserScroll);
     navLinks.forEach((a) =>
       a.removeEventListener("click", onUserClickLink)

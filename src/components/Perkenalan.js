@@ -108,7 +108,7 @@ const Perkenalan = () => {
     </div>
     <h3 style={styles.name}>Muhammad Fadhil</h3>
     <p style={styles.desc}>
-      Putri dari Pasangan <br />
+      Putra dari Pasangan <br />
       Bapak Muhofi (Alm.) & Ibu Muniroh
       {/* <br />
       Beralamat di Jakarta */}

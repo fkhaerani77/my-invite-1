@@ -24,9 +24,13 @@
 .ucapan-form {
   display: flex;
   flex-direction: column;
+  font-family: "'Great Vibes', cursive";
   gap: 1rem;
 }
 
+.ucapan-input {
+    font-family: "'Great Vibes', cursive";
+}
 /* Input & Textarea */
 .ucapan-input,
 .ucapan-textarea,
@@ -44,6 +48,7 @@
 .ucapan-textarea {
   min-height: 100px;
   resize: vertical;
+  font-family: "'Great Vibes', cursive";
 }
 
 .ucapan-input:focus,
@@ -52,6 +57,10 @@
   border-color: #800000;
   box-shadow: 0 0 6px rgba(128, 0, 0, 0.4);
   outline: none;
+}
+
+.ucapan-select {
+    font-family: "'Great Vibes', cursive";
 }
 
 /* Button */
@@ -114,6 +123,7 @@
   font-size: 0.95rem;
   line-height: 1.4;
   word-wrap: break-word;
+  font-family: "'Great Vibes', cursive";
 }
 
 .ucapan-item strong {

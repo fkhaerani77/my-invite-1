@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BsMusicNoteBeamed, BsPauseFill } from "react-icons/bs";
+import { BsMusicNoteBeamed } from "react-icons/bs";
 
 const MusicPlayer = () => {
   const audioRef = useRef(null);
@@ -27,7 +27,15 @@ const MusicPlayer = () => {
     <div style={styles.wrapper}>
       <audio ref={audioRef} src="/music/Song-2.mp3" loop />
       <button onClick={togglePlay} style={styles.button}>
-        {playing ? <BsPauseFill size={22} color="#800000" /> : <BsMusicNoteBeamed size={22} color="#800000" />}
+        {playing ? (
+          <BsMusicNoteBeamed size={22} color="#800000" />
+        ) : (
+          <BsMusicNoteBeamed
+            size={22}
+            color="#800000"
+            style={{ opacity: 0.4, textDecoration: "line-through" }}
+          />
+        )}
       </button>
     </div>
   );
@@ -44,7 +52,7 @@ const styles = {
     background: "#fff",
     border: "2px solid #800000",
     padding: "4px",
-    borderRadius: "30%",
+    borderRadius: "30%", // persis kayak punya kamu
     cursor: "pointer",
     fontSize: "5px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",

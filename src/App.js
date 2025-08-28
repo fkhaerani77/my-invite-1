@@ -22,54 +22,51 @@ function App() {
   const namaTamu = query.get("kpd") || "Tamu Undangan";
 
   const [isOpened, setIsOpened] = useState(false);
-  const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const [isAutoScroll, setIsAutoScroll] = useState(false); // default: tidak langsung jalan
 
-  const heroRef = useRef(null);
   const acaraRef = useRef(null);
   const galeriRef = useRef(null);
-  const perjalananRef = useRef(null);
   const ucapanRef = useRef(null);
   const hadiahRef = useRef(null);
-  const shareRef = useRef(null);
 
+  // auto scroll effect
   useEffect(() => {
     if (!isOpened || !isAutoScroll) return;
 
-    let scrollSpeed = 2;
-    let interval;
+    let scrollSpeed = 2.5; // kecepatan
+    let rafId;
 
     const scrollDown = () => {
-      window.scrollBy({ top: scrollSpeed, behavior: "smooth" });
+      window.scrollBy(0, scrollSpeed);
+      rafId = requestAnimationFrame(scrollDown);
     };
 
-    interval = setInterval(scrollDown, 15);
+    rafId = requestAnimationFrame(scrollDown);
 
     const onUserScroll = (e) => {
       if (e.deltaY < 0) {
-        setIsAutoScroll(false); // hentikan auto scroll kalau user scroll ke atas
+        setIsAutoScroll(false); // stop kalau user scroll ke atas
       }
-    };
-
-    const onUserClickLink = () => {
-      setIsAutoScroll(false);
-      setTimeout(() => {
-        setIsAutoScroll(true); // nyalakan kembali setelah 3 detik
-      }, 3000);
     };
 
     window.addEventListener("wheel", onUserScroll);
 
-    const navLinks = document.querySelectorAll("nav a");
-    navLinks.forEach((a) => a.addEventListener("click", onUserClickLink));
-
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(rafId);
       window.removeEventListener("wheel", onUserScroll);
-      navLinks.forEach((a) =>
-        a.removeEventListener("click", onUserClickLink)
-      );
     };
   }, [isOpened, isAutoScroll]);
+
+  // fungsi mulai auto scroll saat klik tombol
+  const startAutoScroll = () => {
+    // scroll offset dulu biar gak nyangkut di atas
+    window.scrollBy({ top: 50, behavior: "smooth" });
+
+    // kasih jeda dulu biar animasi offset selesai
+    setTimeout(() => {
+      setIsAutoScroll(true);
+    }, 400);
+  };
 
   if (!isOpened) {
     return (
@@ -95,58 +92,50 @@ function App() {
       <div id="galeri" ref={galeriRef}>
         <Galeri />
       </div>
-      {/* <div id="perjalanan" ref={perjalananRef}>
-        <PerjalananCinta />
-      </div> */}
       <div id="hadiah" ref={hadiahRef}>
         <Hadiah />
       </div>
       <div id="ucapan" ref={ucapanRef}>
         <Ucapan />
       </div>
-      {/* <div id="share" ref={shareRef}>
-        <ShareButton namaTamu={namaTamu} />
-      </div> */}
       <div id="maps">
         <Maps />
       </div>
       <Footer />
       <MusicPlayer />
 
-      {/* ✅ Tombol Toggle Auto Scroll (Sudah Diperbaiki) */}
+      {/* ✅ Tombol Toggle Auto Scroll */}
       <div
-  style={{
-    position: "fixed",
-    bottom: "140px", // biar di atas tombol musik
-    right: "10px",
-    zIndex: 9999,
-  }}
->
-  <button
-    onClick={() => setIsAutoScroll((prev) => !prev)}
-    style={{
-      background: isAutoScroll ? "#fff" : "#800000",
-      border: "2px solid #800000",
-      padding: "4px",
-      borderRadius: "30%",
-      cursor: "pointer",
-      fontSize: "5px",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-      transition: "all 0.3s ease",
-    }}
-    title={isAutoScroll ? "Matikan Auto Scroll" : "Nyalakan Auto Scroll"}
-  >
-    {isAutoScroll ? (
-      <FiPause size={22} color="#800000" />
-    ) : (
-      <FiChevronsDown size={22} color="#fff" />
-    )}
-  </button>
-</div>
-
-
-
-
+        style={{
+          position: "fixed",
+          bottom: "140px", // di atas tombol musik
+          right: "10px",
+          zIndex: 9999,
+        }}
+      >
+        <button
+          onClick={() =>
+            isAutoScroll ? setIsAutoScroll(false) : startAutoScroll()
+          }
+          style={{
+            background: isAutoScroll ? "#fff" : "#800000",
+            border: "2px solid #800000",
+            padding: "4px",
+            borderRadius: "30%",
+            cursor: "pointer",
+            fontSize: "5px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            transition: "all 0.3s ease",
+          }}
+          title={isAutoScroll ? "Matikan Auto Scroll" : "Mulai Auto Scroll"}
+        >
+          {isAutoScroll ? (
+            <FiPause size={22} color="#800000" />
+          ) : (
+            <FiChevronsDown size={22} color="#fff" />
+          )}
+        </button>
+      </div>
     </>
   );
 }

@@ -33,50 +33,43 @@ function App() {
   const shareRef = useRef(null);
 
   useEffect(() => {
-  if (!isOpened || !isAutoScroll) return;
+    if (!isOpened || !isAutoScroll) return;
 
-  let scrollSpeed = 1.8; // pas, halus
-  let rafId;
-  let startDelay;
+    let scrollSpeed = 2;
+    let interval;
 
-  const smoothScroll = () => {
-    window.scrollBy(0, scrollSpeed);
-    rafId = requestAnimationFrame(smoothScroll);
-  };
+    const scrollDown = () => {
+      window.scrollBy({ top: scrollSpeed, behavior: "smooth" });
+    };
 
-  // ✅ kasih delay 500ms biar gak nyangkut di atas
-  startDelay = setTimeout(() => {
-    rafId = requestAnimationFrame(smoothScroll);
-  }, 500);
+    interval = setInterval(scrollDown, 15);
 
-  const onUserScroll = (e) => {
-    if (e.deltaY < 0) {
+    const onUserScroll = (e) => {
+      if (e.deltaY < 0) {
+        setIsAutoScroll(false); // hentikan auto scroll kalau user scroll ke atas
+      }
+    };
+
+    const onUserClickLink = () => {
       setIsAutoScroll(false);
-    }
-  };
+      setTimeout(() => {
+        setIsAutoScroll(true); // nyalakan kembali setelah 3 detik
+      }, 3000);
+    };
 
-  const onUserClickLink = () => {
-    setIsAutoScroll(false);
-    setTimeout(() => {
-      setIsAutoScroll(true);
-    }, 3000);
-  };
+    window.addEventListener("wheel", onUserScroll);
 
-  window.addEventListener("wheel", onUserScroll);
+    const navLinks = document.querySelectorAll("nav a");
+    navLinks.forEach((a) => a.addEventListener("click", onUserClickLink));
 
-  const navLinks = document.querySelectorAll("nav a");
-  navLinks.forEach((a) => a.addEventListener("click", onUserClickLink));
-
-  return () => {
-    clearTimeout(startDelay);
-    cancelAnimationFrame(rafId);
-    window.removeEventListener("wheel", onUserScroll);
-    navLinks.forEach((a) =>
-      a.removeEventListener("click", onUserClickLink)
-    );
-  };
-}, [isOpened, isAutoScroll]);
-
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("wheel", onUserScroll);
+      navLinks.forEach((a) =>
+        a.removeEventListener("click", onUserClickLink)
+      );
+    };
+  }, [isOpened, isAutoScroll]);
 
   if (!isOpened) {
     return (

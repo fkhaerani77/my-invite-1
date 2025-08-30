@@ -31,26 +31,31 @@ function App() {
   useEffect(() => {
   if (!isOpened || !isAutoScroll) return;
 
-  const timer = setTimeout(() => {
-    let frameId;
+  let animationFrameId;
 
-    const scrollStep = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll) {
-        setIsAutoScroll(false);
-        cancelAnimationFrame(frameId);
-        return;
-      }
-      window.scrollBy(0, 5);
-      frameId = requestAnimationFrame(scrollStep);
-    };
+  const scrollStep = () => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    if (window.scrollY >= maxScroll) {
+      setIsAutoScroll(false);
+      cancelAnimationFrame(animationFrameId);
+      return;
+    }
 
-    frameId = requestAnimationFrame(scrollStep);
+    // cek posisi saat ini
+    const y = window.scrollY;
 
-    return () => cancelAnimationFrame(frameId);
-  }, 200); // tunggu 200ms sebelum mulai scroll
+    // lebih cepat di page pertama dan kedua (misal hero + perkenalan)
+    let speed = 5; // default
+    if (y < 1000) speed = 8; // page pertama
+    else if (y < 2000) speed = 6; // page kedua
 
-  return () => clearTimeout(timer);
+    window.scrollBy(0, speed);
+    animationFrameId = requestAnimationFrame(scrollStep);
+  };
+
+  animationFrameId = requestAnimationFrame(scrollStep);
+
+  return () => cancelAnimationFrame(animationFrameId);
 }, [isOpened, isAutoScroll]);
 
 

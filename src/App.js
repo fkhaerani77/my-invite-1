@@ -29,24 +29,30 @@ function App() {
 
   // efek auto scroll
   useEffect(() => {
-    if (!isOpened || !isAutoScroll) return;
+  if (!isOpened || !isAutoScroll) return;
 
-    let scrollInterval;
+  const timer = setTimeout(() => {
+    let frameId;
 
-    const scrollDown = () => {
+    const scrollStep = () => {
       const maxScroll = document.body.scrollHeight - window.innerHeight;
       if (window.scrollY >= maxScroll) {
-        clearInterval(scrollInterval);
         setIsAutoScroll(false);
-      } else {
-        window.scrollBy({ top: 8, behavior: "auto" });
+        cancelAnimationFrame(frameId);
+        return;
       }
+      window.scrollBy(0, 5);
+      frameId = requestAnimationFrame(scrollStep);
     };
 
-    scrollInterval = setInterval(scrollDown, 15);
+    frameId = requestAnimationFrame(scrollStep);
 
-    return () => clearInterval(scrollInterval);
-  }, [isOpened, isAutoScroll]);
+    return () => cancelAnimationFrame(frameId);
+  }, 200); // tunggu 200ms sebelum mulai scroll
+
+  return () => clearTimeout(timer);
+}, [isOpened, isAutoScroll]);
+
 
   // auto aktif begitu buka undangan
   useEffect(() => {

@@ -25,7 +25,7 @@ const MusicPlayer = () => {
 
   return (
     <div style={styles.wrapper}>
-      <audio ref={audioRef} src="/music/Song-3.mp3" loop />
+      <audio ref={audioRef} src="/music/Song-Min.mp3" loop />
       <button onClick={togglePlay} style={styles.button}>
         {playing ? (
           <BsMusicNoteBeamed size={22} color="#800000" />

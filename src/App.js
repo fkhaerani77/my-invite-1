@@ -28,7 +28,8 @@ function App() {
   const hadiahRef = useRef(null);
 
   // efek auto scroll
-  useEffect(() => {
+  // efek auto scroll
+useEffect(() => {
   if (!isOpened || !isAutoScroll) return;
 
   let animationFrameId;
@@ -41,15 +42,7 @@ function App() {
       return;
     }
 
-    // cek posisi saat ini
-    const y = window.scrollY;
-
-    // lebih cepat di page pertama dan kedua (misal hero + perkenalan)
-    let speed = 5; // default
-    if (y < 1000) speed = 8; // page pertama
-    else if (y < 2000) speed = 6; // page kedua
-
-    window.scrollBy(0, speed);
+    window.scrollBy(0, 5); // scroll 5px per frame → cukup cepat tapi halus
     animationFrameId = requestAnimationFrame(scrollStep);
   };
 

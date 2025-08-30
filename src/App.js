@@ -43,7 +43,7 @@ function App() {
       }
     };
 
-    scrollInterval = setInterval(scrollDown, 50);
+    scrollInterval = setInterval(scrollDown, 45);
 
     return () => clearInterval(scrollInterval);
   }, [isOpened, isAutoScroll]);

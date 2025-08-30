@@ -28,8 +28,7 @@ function App() {
   const hadiahRef = useRef(null);
 
   // efek auto scroll
-  // efek auto scroll
-useEffect(() => {
+  useEffect(() => {
   if (!isOpened || !isAutoScroll) return;
 
   let animationFrameId;
@@ -42,7 +41,15 @@ useEffect(() => {
       return;
     }
 
-    window.scrollBy(0, 5); // scroll 5px per frame → cukup cepat tapi halus
+    const y = window.scrollY;
+
+    // kecepatan adaptif per section
+    let speed = 5; // default
+    if (y < 900) speed = 8;        // Hero page (slideshow) → lebih cepat
+    else if (y < 1800) speed = 6;  // Perkenalan page (motion) → sedang
+    else speed = 5;                 // section lain → normal
+
+    window.scrollBy(0, speed);
     animationFrameId = requestAnimationFrame(scrollStep);
   };
 

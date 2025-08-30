@@ -39,11 +39,11 @@ function App() {
         clearInterval(scrollInterval);
         setIsAutoScroll(false);
       } else {
-        window.scrollBy({ top: 15, behavior: "smooth" });
+        window.scrollBy({ top: 4, behavior: "auto" });
       }
     };
 
-    scrollInterval = setInterval(scrollDown, 120);
+    scrollInterval = setInterval(scrollDown, 10);
 
     return () => clearInterval(scrollInterval);
   }, [isOpened, isAutoScroll]);

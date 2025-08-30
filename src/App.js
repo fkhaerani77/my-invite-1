@@ -32,20 +32,25 @@ function App() {
     if (!isOpened || !isAutoScroll) return;
 
     let scrollInterval;
+    let timeoutId;
 
-    const scrollDown = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll) {
-        clearInterval(scrollInterval);
-        setIsAutoScroll(false);
-      } else {
-        window.scrollBy({ top: 8, behavior: "auto" });
-      }
+    // Tunda autoscroll 400ms agar layout stabil
+    timeoutId = setTimeout(() => {
+      scrollInterval = setInterval(() => {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        if (window.scrollY >= maxScroll) {
+          clearInterval(scrollInterval);
+          setIsAutoScroll(false);
+        } else {
+          window.scrollBy({ top: 8, behavior: "auto" });
+        }
+      }, 15);
+    }, 400);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(scrollInterval);
     };
-
-    scrollInterval = setInterval(scrollDown, 15);
-
-    return () => clearInterval(scrollInterval);
   }, [isOpened, isAutoScroll]);
 
   // auto aktif begitu buka undangan

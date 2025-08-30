@@ -39,7 +39,7 @@ function App() {
         clearInterval(scrollInterval);
         setIsAutoScroll(false);
       } else {
-        window.scrollBy({ top: 20, behavior: "smooth" });
+        window.scrollBy({ top: 5, behavior: "smooth" });
       }
     };
 

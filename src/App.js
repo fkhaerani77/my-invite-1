@@ -28,25 +28,35 @@ function App() {
   const hadiahRef = useRef(null);
 
   // efek auto scroll
-  useEffect(() => {
-    if (!isOpened || !isAutoScroll) return;
+  // efek auto scroll
+useEffect(() => {
+  if (!isOpened || !isAutoScroll) return;
 
-    let scrollInterval;
+  let frameId;
 
-    const scrollDown = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll) {
-        clearInterval(scrollInterval);
-        setIsAutoScroll(false);
-      } else {
-        window.scrollBy({ top: 4, behavior: "smooth" });
-      }
-    };
+  const scrollStep = () => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
 
-    scrollInterval = setInterval(scrollDown, 40);
+    if (window.scrollY >= maxScroll) {
+      cancelAnimationFrame(frameId);
+      setIsAutoScroll(false);
+      return;
+    }
 
-    return () => clearInterval(scrollInterval);
-  }, [isOpened, isAutoScroll]);
+    // geser sedikit per frame
+    window.scrollTo({
+      top: window.scrollY + 1.5, // ubah angka 1.5 untuk atur kecepatan
+      behavior: "auto", // ❌ jangan "smooth" biar gak geter
+    });
+
+    frameId = requestAnimationFrame(scrollStep);
+  };
+
+  frameId = requestAnimationFrame(scrollStep);
+
+  return () => cancelAnimationFrame(frameId);
+}, [isOpened, isAutoScroll]);
+
 
   // auto aktif begitu buka undangan
   useEffect(() => {

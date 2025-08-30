@@ -15,23 +15,24 @@
 }
 
 .welcome-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* hitam transparan */
-  height: 100%;
-  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
   position: absolute;
   top: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Tengah vertikal */
+  align-items: center;     /* Tengah horizontal */
 
   color: white;
   text-align: center;
   padding: 20px;
 
   animation: fadeIn 2s ease-in;
+  box-sizing: border-box;
 }
 
 .welcome-subtitle {

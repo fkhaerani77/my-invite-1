@@ -1,17 +1,30 @@
 import React, { useState } from "react";
-import { FaHome, FaHandshake, FaQuoteRight, FaCalendarAlt, FaCommentDots, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaHandshake,
+  FaQuoteRight,
+  FaCalendarAlt,
+  FaCommentDots,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 const menuItems = [
   { id: "hero", label: "Opening", icon: <FaHome /> },
   { id: "perkenalan", label: "Mempelai", icon: <FaHandshake /> },
   { id: "quotes", label: "Quotes", icon: <FaQuoteRight /> },
-  { id: "tanggal", label: "Tanggal", icon: <FaCalendarAlt /> },
+  { id: "acara", label: "Tanggal", icon: <FaCalendarAlt /> },
   { id: "ucapan", label: "RSVP", icon: <FaCommentDots /> },
   { id: "maps", label: "Maps", icon: <FaMapMarkerAlt /> },
 ];
 
-const Navbar = () => {
+const Navbar = ({ onNavigate }) => {
   const [active, setActive] = useState("hero");
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    setActive(id);
+    onNavigate(id);
+  };
 
   return (
     <nav style={styles.nav}>
@@ -19,7 +32,7 @@ const Navbar = () => {
         <a
           key={item.id}
           href={`#${item.id}`}
-          onClick={() => setActive(item.id)}
+          onClick={(e) => handleClick(e, item.id)}
           style={{
             ...styles.link,
             ...(active === item.id ? styles.activeLink : {}),
@@ -72,4 +85,4 @@ const styles = {
   },
 };
 
-export default Navbar; 
+export default Navbar;

@@ -7,10 +7,8 @@ import Ucapan from "./components/Ucapan";
 import Hadiah from "./components/Hadiah";
 import Footer from "./components/Footer";
 import MusicPlayer from "./components/MusicPlayer";
-// import ShareButton from "./components/ShareButton";
 import Navbar from "./components/Navbar";
 import WelcomeScreen from "./components/WelcomeScreen";
-// import PerjalananCinta from "./components/PerjalananCinta";
 import Perkenalan from "./components/Perkenalan";
 import Quotes from "./components/Quotes";
 import Maps from "./components/Maps";
@@ -22,50 +20,63 @@ function App() {
   const namaTamu = query.get("kpd") || "Tamu Undangan";
 
   const [isOpened, setIsOpened] = useState(false);
-  const [isAutoScroll, setIsAutoScroll] = useState(false); // default: tidak langsung jalan
+  const [isAutoScroll, setIsAutoScroll] = useState(false);
 
   const acaraRef = useRef(null);
   const galeriRef = useRef(null);
   const ucapanRef = useRef(null);
   const hadiahRef = useRef(null);
 
-  // auto scroll effect
+  // efek auto scroll
   useEffect(() => {
     if (!isOpened || !isAutoScroll) return;
 
-    let scrollSpeed = 2.5; // kecepatan
-    let rafId;
+    let scrollInterval;
 
     const scrollDown = () => {
-      window.scrollBy(0, scrollSpeed);
-      rafId = requestAnimationFrame(scrollDown);
-    };
-
-    rafId = requestAnimationFrame(scrollDown);
-
-    const onUserScroll = (e) => {
-      if (e.deltaY < 0) {
-        setIsAutoScroll(false); // stop kalau user scroll ke atas
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      if (window.scrollY >= maxScroll) {
+        clearInterval(scrollInterval);
+        setIsAutoScroll(false);
+      } else {
+        window.scrollBy({ top: 2, behavior: "smooth" });
       }
     };
 
-    window.addEventListener("wheel", onUserScroll);
+    scrollInterval = setInterval(scrollDown, 50);
 
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("wheel", onUserScroll);
-    };
+    return () => clearInterval(scrollInterval);
   }, [isOpened, isAutoScroll]);
 
-  // fungsi mulai auto scroll saat klik tombol
-  const startAutoScroll = () => {
-    // scroll offset dulu biar gak nyangkut di atas
-    window.scrollBy({ top: 50, behavior: "smooth" });
-
-    // kasih jeda dulu biar animasi offset selesai
-    setTimeout(() => {
+  // auto aktif begitu buka undangan
+  useEffect(() => {
+    if (isOpened) {
       setIsAutoScroll(true);
-    }, 400);
+    }
+  }, [isOpened]);
+
+  // handler toggle manual
+  const toggleAutoScroll = () => {
+    setIsAutoScroll((prev) => !prev);
+  };
+
+  // handler untuk navigasi Navbar
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // stop auto scroll sementara
+    const wasAuto = isAutoScroll;
+    setIsAutoScroll(false);
+
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // hidupkan lagi auto scroll setelah delay
+    if (wasAuto) {
+      setTimeout(() => {
+        setIsAutoScroll(true);
+      }, 1200);
+    }
   };
 
   if (!isOpened) {
@@ -76,7 +87,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar onNavigate={scrollToSection} />
       <div id="hero">
         <Hero namaTamu={namaTamu} />
       </div>
@@ -104,19 +115,17 @@ function App() {
       <Footer />
       <MusicPlayer />
 
-      {/* ✅ Tombol Toggle Auto Scroll */}
+      {/* Tombol Toggle Auto Scroll */}
       <div
         style={{
           position: "fixed",
-          bottom: "140px", // di atas tombol musik
+          bottom: "140px",
           right: "10px",
           zIndex: 9999,
         }}
       >
         <button
-          onClick={() =>
-            isAutoScroll ? setIsAutoScroll(false) : startAutoScroll()
-          }
+          onClick={toggleAutoScroll}
           style={{
             background: isAutoScroll ? "#fff" : "#800000",
             border: "2px solid #800000",

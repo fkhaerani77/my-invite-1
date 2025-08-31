@@ -4,8 +4,10 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: center; /* ⬅️ Memposisikan konten ke tengah */
+  align-items: center;
   text-align: center;
+  font-family: "Georgia", serif; /* default elegan */
+  background: linear-gradient(135deg, #fdf7f6, #f9ecec);
 }
 
 .hero-backgrounds {
@@ -19,85 +21,106 @@
 
 .hero-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+  inset: 0;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   opacity: 0;
   transition: opacity 1.5s ease-in-out;
+  filter: brightness(0.9) contrast(1);
 }
 
 .hero-bg.visible {
   opacity: 1;
-  z-index: 1;
 }
 
-/* ✅ Tambahan efek blur putih di bagian bawah background */
 .hero-section::after {
   content: "";
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40%; /* Bisa diubah sesuai kebutuhan */
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent);
-  z-index: 2;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
-  z-index: 3;
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 2rem;
-  border-radius: 1.2rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.5px);
-  color: #6b1e1e;
-  max-width: 90%;
-  width: 420px; /* ⬅️ Ukuran konsisten dan tidak kepanjangan */
+  z-index: 2;
+  max-width: 750px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
 }
 
-.hero-title {
-  font-family: "Playfair Display", serif;
-  font-size: 1.8rem;
-  color: #6b1e1e;
-  padding-bottom: 20px;
-  margin-bottom: 0.5rem;
+.hero-subtitle,
+.hero-title,
+.countdown-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.hero-subtitle.show,
+.hero-title.show,
+.countdown-container.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-subtitle {
-  font-family: "Great Vibes", cursive;
+  font-family: "Great Vibes", cursive; /* ✨ font kaligrafi elegan */
   font-size: 2rem;
-  color: #6b1e1e;
-  margin-bottom: 2rem;
+  margin-bottom: 10px;
+  color: #6b2b2b;
 }
 
+.hero-title {
+  font-family: "Playfair Display", serif; /* ✨ font elegan */
+  font-size: 2.7rem;
+  font-weight: bold;
+  color: #4a2c2a;
+}
+
+/* ========== Countdown Box ========== */
 .countdown-container {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  font-family: "Georgia", serif; /* tetap formal */
 }
 
 .countdown-box {
+  background: #6b2b2b;
+  color: #fff;
+  padding: 18px 20px;
+  border-radius: 10px;
   flex: 1;
-  background-color: #6b1e1e;
-  color: white;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.4rem;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .count-number {
-  font-size: 1rem;
+  font-size: clamp(1rem, 4vw, 2rem);
   font-weight: bold;
+  margin-bottom: 5px;
+  font-family: "Georgia", serif;
+  letter-spacing: 1px;
 }
 
 .count-label {
-  font-size: 0.6rem;
+  font-size: clamp(0.6rem, 2vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: "Georgia", serif;
 }
 
+/* Arabic Opening */
 .arabic-opening {
   font-family: 'Lateef', serif;
   font-size: 1rem;
@@ -107,18 +130,13 @@
   line-height: 1.8;
 }
 
-.kalimat-pembukaan {
-  font-family: 'Georgia' serif; /* atau bisa ganti dengan 'Playfair Display' */
-  font-size: 1rem;
-  color: #5a3b3b;
-  text-align: center;
-  padding-top: 20px;
-  line-height: 1.7;
-  padding: 2px;
+/* Responsive Mobile */
+@media (max-width: 768px) {
+  .countdown-container {
+    gap: 10px;
+  }
+
+  .countdown-box {
+    padding: 10px;
+  }
 }
-
-.surat {
-  font-weight: 600;
-}
-
-

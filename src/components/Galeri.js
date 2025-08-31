@@ -1,8 +1,8 @@
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import foto1 from "../assets/amel-1.jpg";
-import foto2 from "../assets/amel-2.jpg";
-import foto3 from "../assets/amel-3.jpg";
+import foto1 from "../assets/amel-1.webp";
+import foto2 from "../assets/amel-2.webp";
+import foto3 from "../assets/amel-3.webp";
 import foto4 from "../assets/amel-4.jpg";
 import foto5 from "../assets/amel-5.jpg";
 import foto6 from "../assets/cpp1.jpg";

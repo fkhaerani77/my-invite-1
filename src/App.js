@@ -31,31 +31,28 @@ function App() {
   useEffect(() => {
   if (!isOpened || !isAutoScroll) return;
 
-  let animationFrameId;
+  let lastTimestamp = performance.now();
 
-  const scrollStep = () => {
+  const scrollStep = (timestamp) => {
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     if (window.scrollY >= maxScroll) {
       setIsAutoScroll(false);
-      cancelAnimationFrame(animationFrameId);
       return;
     }
 
-    const y = window.scrollY;
+    // jalankan tiap ~16ms (~60fps)
+    const delta = timestamp - lastTimestamp;
+    if (delta > 16) {
+      let y = window.scrollY;
+      let speed = 2; // scroll lebih kecil per frame → lebih halus
+      window.scrollBy(0, speed);
+      lastTimestamp = timestamp;
+    }
 
-    // kecepatan adaptif per section
-    let speed = 5; // default
-    if (y < 900) speed = 8;        // Hero page (slideshow) → lebih cepat
-    else if (y < 1800) speed = 6;  // Perkenalan page (motion) → sedang
-    else speed = 5;                 // section lain → normal
-
-    window.scrollBy(0, speed);
-    animationFrameId = requestAnimationFrame(scrollStep);
+    requestAnimationFrame(scrollStep);
   };
 
-  animationFrameId = requestAnimationFrame(scrollStep);
-
-  return () => cancelAnimationFrame(animationFrameId);
+  requestAnimationFrame(scrollStep);
 }, [isOpened, isAutoScroll]);
 
 

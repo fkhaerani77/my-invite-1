@@ -21,65 +21,69 @@ function App() {
 
   const [isOpened, setIsOpened] = useState(false);
   const [isAutoScroll, setIsAutoScroll] = useState(false);
+  const [showHint, setShowHint] = useState(true); // popup petunjuk
 
   const acaraRef = useRef(null);
   const galeriRef = useRef(null);
   const ucapanRef = useRef(null);
   const hadiahRef = useRef(null);
 
+  // deteksi mobile
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // efek auto scroll
   useEffect(() => {
-  if (!isOpened || !isAutoScroll) return;
+    if (!isOpened || !isAutoScroll) return;
 
-  let lastTimestamp = performance.now();
+    let animationFrameId;
+    const speed = isMobile ? 1.5 : 4; // lebih lambat di mobile
 
-  const scrollStep = (timestamp) => {
-    const maxScroll = document.body.scrollHeight - window.innerHeight;
-    if (window.scrollY >= maxScroll) {
-      setIsAutoScroll(false);
-      return;
-    }
+    const scrollStep = () => {
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      if (window.scrollY >= maxScroll) {
+        setIsAutoScroll(false);
+        cancelAnimationFrame(animationFrameId);
+        return;
+      }
 
-    // jalankan tiap ~16ms (~60fps)
-    const delta = timestamp - lastTimestamp;
-    if (delta > 16) {
-      let y = window.scrollY;
-      let speed = 2; // scroll lebih kecil per frame → lebih halus
       window.scrollBy(0, speed);
-      lastTimestamp = timestamp;
-    }
+      animationFrameId = requestAnimationFrame(scrollStep);
+    };
 
-    requestAnimationFrame(scrollStep);
-  };
+    // delay 1 detik di mobile supaya Hero & Perkenalan selesai render
+    const delay = isMobile ? 1000 : 0;
+    const timeoutId = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(scrollStep);
+    }, delay);
 
-  requestAnimationFrame(scrollStep);
-}, [isOpened, isAutoScroll]);
+    return () => {
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isOpened, isAutoScroll, isMobile]);
 
-
-  // auto aktif begitu buka undangan
-  useEffect(() => {
-    if (isOpened) {
-      setIsAutoScroll(true);
-    }
-  }, [isOpened]);
-
-  // handler toggle manual
+  // toggle auto scroll manual
   const toggleAutoScroll = () => {
+    setShowHint(false); // sembunyikan petunjuk
     setIsAutoScroll((prev) => !prev);
   };
 
-  // handler untuk navigasi Navbar
+  // navigasi Navbar
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
 
-    // stop auto scroll sementara
     const wasAuto = isAutoScroll;
     setIsAutoScroll(false);
 
     el.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // hidupkan lagi auto scroll setelah delay
     if (wasAuto) {
       setTimeout(() => {
         setIsAutoScroll(true);
@@ -96,30 +100,14 @@ function App() {
   return (
     <>
       <Navbar onNavigate={scrollToSection} />
-      <div id="hero">
-        <Hero namaTamu={namaTamu} />
-      </div>
-      <div id="perkenalan">
-        <Perkenalan />
-      </div>
-      <div id="quotes">
-        <Quotes />
-      </div>
-      <div id="acara" ref={acaraRef}>
-        <Acara />
-      </div>
-      <div id="galeri" ref={galeriRef}>
-        <Galeri />
-      </div>
-      <div id="hadiah" ref={hadiahRef}>
-        <Hadiah />
-      </div>
-      <div id="ucapan" ref={ucapanRef}>
-        <Ucapan />
-      </div>
-      <div id="maps">
-        <Maps />
-      </div>
+      <div id="hero"><Hero namaTamu={namaTamu} /></div>
+      <div id="perkenalan"><Perkenalan /></div>
+      <div id="quotes"><Quotes /></div>
+      <div id="acara" ref={acaraRef}><Acara /></div>
+      <div id="galeri" ref={galeriRef}><Galeri /></div>
+      <div id="hadiah" ref={hadiahRef}><Hadiah /></div>
+      <div id="ucapan" ref={ucapanRef}><Ucapan /></div>
+      <div id="maps"><Maps /></div>
       <Footer />
       <MusicPlayer />
 
@@ -130,6 +118,7 @@ function App() {
           bottom: "140px",
           right: "10px",
           zIndex: 9999,
+          textAlign: "center",
         }}
       >
         <button
@@ -152,6 +141,24 @@ function App() {
             <FiChevronsDown size={22} color="#fff" />
           )}
         </button>
+
+        {/* Popup petunjuk */}
+        {showHint && !isAutoScroll && (
+          <div
+            style={{
+              marginTop: "6px",
+              background: "#fff3e0",
+              color: "#4b0000",
+              padding: "6px 10px",
+              borderRadius: "6px",
+              fontSize: "12px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+              maxWidth: "180px",
+            }}
+          >
+            Klik tombol untuk aktifkan auto scroll
+          </div>
+        )}
       </div>
     </>
   );

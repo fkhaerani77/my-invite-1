@@ -21,60 +21,64 @@ function App() {
 
   const [isOpened, setIsOpened] = useState(false);
   const [isAutoScroll, setIsAutoScroll] = useState(false);
-  const [showHint, setShowHint] = useState(true); // popup petunjuk
+  const [showHint, setShowHint] = useState(true);
 
   const acaraRef = useRef(null);
   const galeriRef = useRef(null);
   const ucapanRef = useRef(null);
   const hadiahRef = useRef(null);
 
-  // deteksi mobile
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // efek auto scroll
+  // efek auto scroll dengan tunda sampai semua gambar selesai load
   useEffect(() => {
     if (!isOpened || !isAutoScroll) return;
 
     let animationFrameId;
-    const speed = isMobile ? 1.5 : 4; // lebih lambat di mobile
+    let started = false;
 
-    const scrollStep = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll) {
-        setIsAutoScroll(false);
-        cancelAnimationFrame(animationFrameId);
-        return;
-      }
+    const startScroll = () => {
+      if (started) return;
+      started = true;
 
-      window.scrollBy(0, speed);
+      const scrollStep = () => {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        if (window.scrollY >= maxScroll) {
+          setIsAutoScroll(false);
+          cancelAnimationFrame(animationFrameId);
+          return;
+        }
+
+        // buat langkah lebih halus di awal (biar tidak getar)
+        const step =
+          window.scrollY < window.innerHeight * 2
+            ? 2 // halaman awal → lebih kecil
+            : 4; // sisanya normal
+        window.scrollBy(0, step);
+
+        animationFrameId = requestAnimationFrame(scrollStep);
+      };
+
       animationFrameId = requestAnimationFrame(scrollStep);
     };
 
-    // delay 1 detik di mobile supaya Hero & Perkenalan selesai render
-    const delay = isMobile ? 1000 : 0;
-    const timeoutId = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(scrollStep);
-    }, delay);
+    // pastikan semua asset sudah selesai load
+    if (document.readyState === "complete") {
+      startScroll();
+    } else {
+      const handleLoad = () => startScroll();
+      window.addEventListener("load", handleLoad);
+      return () => window.removeEventListener("load", handleLoad);
+    }
 
-    return () => {
-      clearTimeout(timeoutId);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isOpened, isAutoScroll, isMobile]);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isOpened, isAutoScroll]);
 
-  // toggle auto scroll manual
+  // handler toggle manual
   const toggleAutoScroll = () => {
-    setShowHint(false); // sembunyikan petunjuk
     setIsAutoScroll((prev) => !prev);
+    setShowHint(false);
   };
 
-  // navigasi Navbar
+  // handler untuk navigasi Navbar
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -100,14 +104,30 @@ function App() {
   return (
     <>
       <Navbar onNavigate={scrollToSection} />
-      <div id="hero"><Hero namaTamu={namaTamu} /></div>
-      <div id="perkenalan"><Perkenalan /></div>
-      <div id="quotes"><Quotes /></div>
-      <div id="acara" ref={acaraRef}><Acara /></div>
-      <div id="galeri" ref={galeriRef}><Galeri /></div>
-      <div id="hadiah" ref={hadiahRef}><Hadiah /></div>
-      <div id="ucapan" ref={ucapanRef}><Ucapan /></div>
-      <div id="maps"><Maps /></div>
+      <div id="hero">
+        <Hero namaTamu={namaTamu} />
+      </div>
+      <div id="perkenalan">
+        <Perkenalan />
+      </div>
+      <div id="quotes">
+        <Quotes />
+      </div>
+      <div id="acara" ref={acaraRef}>
+        <Acara />
+      </div>
+      <div id="galeri" ref={galeriRef}>
+        <Galeri />
+      </div>
+      <div id="hadiah" ref={hadiahRef}>
+        <Hadiah />
+      </div>
+      <div id="ucapan" ref={ucapanRef}>
+        <Ucapan />
+      </div>
+      <div id="maps">
+        <Maps />
+      </div>
       <Footer />
       <MusicPlayer />
 
@@ -142,7 +162,6 @@ function App() {
           )}
         </button>
 
-        {/* Popup petunjuk */}
         {showHint && !isAutoScroll && (
           <div
             style={{

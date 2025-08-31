@@ -57,14 +57,12 @@ const Hero = () => {
   return (
     <section ref={heroRef} className="hero-section">
       <div className="hero-backgrounds">
-        {imageList.map((img, index) => (
-          <div
-            key={index}
-            className={`hero-bg ${index === currentImage ? "visible" : ""}`}
-            style={{ backgroundImage: `url(${img})` }}
-          />
-        ))}
-      </div>
+  <div
+    className="hero-bg visible"
+    style={{ backgroundImage: `url(${foto1})` }}
+  />
+</div>
+
 
       <div className="hero-content">
         <p className={`hero-subtitle ${isVisible ? "show" : ""}`}>

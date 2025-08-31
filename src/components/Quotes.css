@@ -1,0 +1,113 @@
+.quotes-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #7B1E1E;
+  text-align: center;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.overlay-top {
+  top: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.74), rgba(255,255,255,0));
+}
+
+.overlay-bottom {
+  bottom: 0;
+  height: 200px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.67), rgba(255,255,255,0));
+}
+
+.quotes-box {
+  max-width: 700px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 2;
+  line-height: 2;
+}
+
+/* Arab text */
+.arabic-text {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  font-family: "Amiri", serif;
+}
+
+/* Reference */
+.reference {
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+/* Countdown container besar */
+.countdown {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.countdown-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  background-color: #7B1E1E; /* kotak besar maroon */
+  padding: 20px;
+  border-radius: 16px;
+  flex-wrap: wrap;
+}
+
+.time-box {
+  background-color: #fff; /* kotak kecil putih */
+  color: #7B1E1E;
+  padding: 16px 20px;
+  border-radius: 12px;
+  min-width: 70px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.time-box span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.time-box small {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 400px) {
+  .time-box {
+    padding: 12px 14px;
+    min-width: 60px;
+  }
+  .time-box span {
+    font-size: 1.2rem;
+  }
+  .time-box small {
+    font-size: 0.65rem;
+  }
+}
